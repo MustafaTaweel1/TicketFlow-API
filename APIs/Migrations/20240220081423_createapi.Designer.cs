@@ -11,8 +11,8 @@ using webAPI.Model;
 namespace APIs.Migrations
 {
     [DbContext(typeof(db))]
-    [Migration("20230830105050_dbContext")]
-    partial class dbContext
+    [Migration("20240220081423_createapi")]
+    partial class createapi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,27 @@ namespace APIs.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Currencys");
+                });
+
+            modelBuilder.Entity("webAPI.Model.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("webAPI.Model.person", b =>

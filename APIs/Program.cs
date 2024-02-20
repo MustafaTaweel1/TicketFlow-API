@@ -21,8 +21,9 @@ namespace webAPI
             builder.Services.AddControllers();
             builder.Services.AddScoped<Iperson<person>, personRepository>();
             builder.Services.AddScoped<IAPIs<Currency>, CurrencyRepository>();
+			builder.Services.AddScoped<IAPIs<User>, UserRepository>();
 
-            builder.Services.AddDbContext<db>(options =>
+			builder.Services.AddDbContext<db>(options =>
             {
                 options.UseSqlServer("Data Source=(localdb)\\ProjectModels;Initial Catalog=APIs;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
             });

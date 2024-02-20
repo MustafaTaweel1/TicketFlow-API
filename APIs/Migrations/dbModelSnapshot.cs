@@ -46,6 +46,27 @@ namespace APIs.Migrations
                     b.ToTable("Currencys");
                 });
 
+            modelBuilder.Entity("webAPI.Model.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("users");
+                });
+
             modelBuilder.Entity("webAPI.Model.person", b =>
                 {
                     b.Property<int>("id")
