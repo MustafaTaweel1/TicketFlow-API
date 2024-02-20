@@ -30,14 +30,14 @@ namespace webAPI.Model
         // GET BY CURRENCY CODE
         public async Task<IEnumerable<User>> Get(string getEmail)
         {
-            var output = await _db.users.Where(or => or.email.Contains(getEmail)).ToListAsync();
+            var output = await _db.users.Where(or => or.email==(getEmail)).ToListAsync();
             return output;
         }
 
         // GET BY CURRENCY CODE AND NAME  
         public async Task<IEnumerable<User>> Get(string email = "", string password = "")
         {
-            return await _db.users.Where(or => or.email.Contains(email) && or.password.Contains(password)).ToListAsync();
+            return await _db.users.Where(or => or.email==(email) && or.password==(password)).ToListAsync();
 
         }
 

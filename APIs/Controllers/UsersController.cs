@@ -15,42 +15,41 @@ namespace webAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<User>> GetCurrency()
+        public async Task<IEnumerable<User>> GetUser()
         {
             return await _User.Get();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetCurrency(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             return await _User.Get(id);
         }
+
+        /*
         [HttpGet("currencys")]
-        public async Task<IEnumerable<User>> GetCurrency(string currency, string name)
+        public async Task<IEnumerable<User>> GetUser(string currency, string name)
         {
             return await _User.Get(currency, name);
         }
         [HttpGet("currency")]
-        public async Task<IEnumerable<User>> GetCurrency(string currency)
+        public async Task<IEnumerable<User>> GetUser(string name)
         {
-            return await      _User.Get(currency);
+            return await _User.Get(name);
         }
-
-
-
+        */
 
         [HttpPost]
         public async Task<ActionResult<User>> Post([FromBody] User User)
         {
-            var newCurrency = await _User.Post(User);
-            return CreatedAtAction(nameof(GetCurrency), new { id = newCurrency.id }, newCurrency);
+
+            var newUser = await _User.Post(User);
+
+            return CreatedAtAction(nameof(GetUser), new { id = newUser.id}, newUser);
         }
+
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] User User)
+        public async Task<ActionResult> Put([FromBody] User User)
         {
-            if (id != User.id)
-            {
-                return BadRequest();
-            }
             await _User.Put(User);
             return NoContent();
         }
