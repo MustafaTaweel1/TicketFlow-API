@@ -19,8 +19,6 @@ namespace webAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
-            builder.Services.AddScoped<Iperson<person>, personRepository>();
-            builder.Services.AddScoped<IAPIs<Currency>, CurrencyRepository>();
 			builder.Services.AddScoped<IAPIs<User>, UserRepository>();
 
 			builder.Services.AddDbContext<db>(options =>
