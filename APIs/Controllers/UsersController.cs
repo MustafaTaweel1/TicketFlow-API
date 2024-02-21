@@ -19,10 +19,17 @@ namespace webAPI.Controllers
         {
             return await _User.Get();
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             return await _User.Get(id);
+        }
+
+        [HttpGet("login")]
+        public async Task<IEnumerable<User>> GetUser(string email, string password)
+        {
+            return await _User.Get();
         }
 
         /*
@@ -38,23 +45,34 @@ namespace webAPI.Controllers
         }
         */
 
-        [HttpPost]
-        public async Task<ActionResult<User>> Post([FromBody] User User)
+
+        //Same as Sign-Up
+        [HttpPost("create")]
+        public async Task<ActionResult<User>> Post(string userName, string email, string password, [FromBody] User User)
         {
+
+            // Generate a random value for userUN
+            Random random = new Random();
+            User.userUN = random.Next();
 
             var newUser = await _User.Post(User);
 
             return CreatedAtAction(nameof(GetUser), new { id = newUser.id}, newUser);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put([FromBody] User User)
+        [HttpPut("update")]
+        public async Task<ActionResult> Put(string userName, string email, string password, [FromBody] User User)
         {
+            if(User.password != password)
+            {
+                return BadRequest();
+            }
+
             await _User.Put(User);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("destroy/{id}")]
         public async Task<ActionResult> Delect(int id)
         {
             var Currencydelet = await _User.Get(id);

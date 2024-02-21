@@ -5,19 +5,19 @@
 namespace APIs.Migrations
 {
     /// <inheritdoc />
-    public partial class createapi : Migration
+    public partial class createAPI : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
-
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    userUN = table.Column<int>(type: "int", nullable: false),
+                    userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -30,10 +30,6 @@ namespace APIs.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
-            migrationBuilder.DropTable(
-                name: "Persons");
-
             migrationBuilder.DropTable(
                 name: "users");
         }

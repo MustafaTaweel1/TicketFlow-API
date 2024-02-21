@@ -11,8 +11,8 @@ using webAPI.Model;
 namespace APIs.Migrations
 {
     [DbContext(typeof(db))]
-    [Migration("20240220081423_createapi")]
-    partial class createapi
+    [Migration("20240220130603_createAPI")]
+    partial class createAPI
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,31 +23,6 @@ namespace APIs.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("webAPI.Model.Currency", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("price")
-                        .HasPrecision(9, 5)
-                        .HasColumnType("decimal(9, 5)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Currencys");
-                });
 
             modelBuilder.Entity("webAPI.Model.User", b =>
                 {
@@ -65,29 +40,13 @@ namespace APIs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
-
-                    b.ToTable("users");
-                });
-
-            modelBuilder.Entity("webAPI.Model.person", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("name")
+                    b.Property<string>("userName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("users");
                 });
 #pragma warning restore 612, 618
         }

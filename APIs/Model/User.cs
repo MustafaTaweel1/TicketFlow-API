@@ -6,6 +6,8 @@ namespace webAPI.Model
     public class User
     {
         public int id { get; set; }
+        public required int userUN { get; set; }
+        public required string userName { get; set; }
         public required string email { get; set; }
         public required string password { get; set; }
 
