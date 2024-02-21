@@ -27,28 +27,28 @@ namespace webAPI.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<IEnumerable<User>> GetUser(string email, string password)
+        public async Task<ActionResult<IEnumerable<User>>> GetUser(string email, string password)
         {
-            return await _User.Get();
+            // Query the database for users with the exact email and password (case-sensitive)
+            var users = await _User.Get(email, password);
+
+            if (users == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(users);
         }
 
-        /*
-        [HttpGet("currencys")]
-        public async Task<IEnumerable<User>> GetUser(string currency, string name)
+        [HttpGet("checkEmail")]
+        public async Task<IEnumerable<User>> GetUser(string email)
         {
-            return await _User.Get(currency, name);
+            return await _User.Get(email);
         }
-        [HttpGet("currency")]
-        public async Task<IEnumerable<User>> GetUser(string name)
-        {
-            return await _User.Get(name);
-        }
-        */
-
-
-        //Same as Sign-Up
-        [HttpPost("create")]
-        public async Task<ActionResult<User>> Post(string userName, string email, string password, [FromBody] User User)
+     
+        //Same as Create
+        [HttpPost("signUp")]
+        public async Task<ActionResult<User>> Post([FromBody] User User)
         {
 
             // Generate a random value for userUN
@@ -61,13 +61,8 @@ namespace webAPI.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> Put(string userName, string email, string password, [FromBody] User User)
+        public async Task<ActionResult> Put([FromBody] User User)
         {
-            if(User.password != password)
-            {
-                return BadRequest();
-            }
-
             await _User.Put(User);
             return NoContent();
         }

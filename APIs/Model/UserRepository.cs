@@ -34,19 +34,22 @@ namespace webAPI.Model
             return output;
         }
 
-        // GET BY CURRENCY CODE AND NAME  
         public async Task<IEnumerable<User>> Get(string email = "", string password = "")
         {
-            return await _db.users.Where(or => or.email==(email) && or.password==(password)).ToListAsync();
-
+            // Convert email and password to lowercase for case-insensitive comparison
+            var lowercaseEmail = email.ToLower();
+            var lowercasePassword = password.ToLower();
+            return await _db.users.Where(or => or.email == lowercaseEmail && or.password == lowercasePassword).ToListAsync();
         }
 
         public async Task<User> Post(User user)
         {
-            _db.users.AddAsync(user);
-            await _db.SaveChangesAsync();
+            user.email = user.email.ToLower(); // Convert email to lowercase
+            await _db.users.AddAsync(user); // Add the user to the database
+            await _db.SaveChangesAsync(); // Save changes to the database
             return user;
         }
+
 
         public async Task Put(User user)
         {

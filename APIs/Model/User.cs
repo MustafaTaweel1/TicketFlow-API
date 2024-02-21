@@ -9,6 +9,8 @@ namespace webAPI.Model
         public required int userUN { get; set; }
         public required string userName { get; set; }
         public required string email { get; set; }
+
+        [DataType(DataType.Password)]
         public required string password { get; set; }
 
     }
