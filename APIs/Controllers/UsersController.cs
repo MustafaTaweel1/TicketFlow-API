@@ -15,34 +15,34 @@ namespace webAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<User>> GetCurrency()
+        public async Task<IEnumerable<User>> GetUser()
         {
             return await _User.Get();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetCurrency(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             return await _User.Get(id);
         }
-        [HttpGet("currencys")]
-        public async Task<IEnumerable<User>> GetCurrency(string currency, string name)
+        [HttpGet("users")]
+        public async Task<IEnumerable<User>> GetUser(string email, string password)
         {
-            return await _User.Get(currency, name);
+            return await _User.Get(email, password);
         }
-        [HttpGet("currency")]
-        public async Task<IEnumerable<User>> GetCurrency(string currency)
-        {
-            return await      _User.Get(currency);
-        }
+		[HttpGet("Email")]
+		public async Task<IEnumerable<User>> GetUser(string email)
+		{
+			return await _User.Get(email);
+		}
 
 
 
 
-        [HttpPost]
+		[HttpPost]
         public async Task<ActionResult<User>> Post([FromBody] User User)
         {
             var newCurrency = await _User.Post(User);
-            return CreatedAtAction(nameof(GetCurrency), new { id = newCurrency.id }, newCurrency);
+            return CreatedAtAction(nameof(GetUser), new { id = newCurrency.id }, newCurrency);
         }
         [HttpPut]
         public async Task<ActionResult> Put(int id, [FromBody] User User)
