@@ -25,24 +25,37 @@ namespace webAPI.Model
         // get by ID
         public async Task<User> Get(int id)
         {
+
         return await _db.users.FindAsync(id);
         }
         // GET BY CURRENCY CODE
         public async Task<IEnumerable<User>> Get(string getEmail)
         {
-            var output = await _db.users.Where(or => or.email==(getEmail)).ToListAsync();
+			getEmail = getEmail.ToLower();
+			var output = await _db.users.Where(or => or.email==(getEmail)).ToListAsync();
             return output;
         }
 
-        // GET BY CURRENCY CODE AND NAME  
-        public async Task<IEnumerable<User>> Get(string email, string password)
-        {
-            return await _db.users.Where(or => or.email.Equals(email) && or.password.Equals(password)).ToListAsync();
+		// GET BY CURRENCY CODE AND NAME  
+		public async Task<IEnumerable<User>> Get(string email, string password)
+		{
+			email = email.ToLower();
 
-        }
+			// Fetch users from the database
+			var users = await _db.users
 
-        public async Task<User> Post(User user)
+				.Where(user => user.email.Equals(email))
+				.ToListAsync();
+
+			// Perform case-sensitive password comparison on the client side
+			return users.Where(user => user.password.Equals(password));
+		}
+
+
+
+		public async Task<User> Post(User user)
         {
+            user.email = user.email.ToLower();
             _db.users.AddAsync(user);
             await _db.SaveChangesAsync();
             return user;
@@ -50,9 +63,12 @@ namespace webAPI.Model
 
         public async Task Put(User user)
         {
+            user.email = user.email.ToLower();
+
 			_db.Entry(user).State = EntityState.Modified;
 
 			await _db.SaveChangesAsync();
+
         }
     }
 }
