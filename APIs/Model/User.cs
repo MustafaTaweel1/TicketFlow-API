@@ -3,15 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace webAPI.Model
 {
-    public class User
+	[Table("users")]
+	public class User
     {
         public int id { get; set; }
-        public required int userUN { get; set; }
-        public required string userName { get; set; }
-        public required string email { get; set; }
+		[Required]
+		[DataType(DataType.EmailAddress)]
+        public string email { get; set; }
+		[Required]
+		[MaxLength(50),MinLength(6)]
+		public string name { get; set; }
+		[Required]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		public string password { get; set; }
 
-        [DataType(DataType.Password)]
-        public required string password { get; set; }
 
-    }
+
+	}
 }

@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics.Metrics;
 using webAPI.Model;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webAPI
 {
@@ -20,15 +23,17 @@ namespace webAPI
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
 			builder.Services.AddScoped<IAPIs<User>, UserRepository>();
+			builder.Services.AddScoped<IAPIs<Password_Reset>, Password_ResetRepository>();
 
 			builder.Services.AddDbContext<db>(options =>
             {
-                options.UseSqlServer("Data Source=(localdb)\\ProjectModels;Initial Catalog=APIs;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-            });
+                options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
+			});
 
-            var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+			var app = builder.Build();
+
+			// Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

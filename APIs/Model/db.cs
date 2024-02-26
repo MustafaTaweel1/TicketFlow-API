@@ -6,10 +6,17 @@ namespace webAPI.Model
     public class db:DbContext
     {
         public DbSet<User> users { get; set; }
-        public db(DbContextOptions<db> optinos) : base(optinos)
+		public DbSet<Password_Reset> password_resets { get; set; }
+
+		public db(DbContextOptions<db> optinos) : base(optinos)
         {
             Database.EnsureCreated();
         }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<User>().ToTable("users");
+		}
 
-    }
+
+	}
 }

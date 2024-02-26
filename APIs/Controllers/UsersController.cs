@@ -19,55 +19,43 @@ namespace webAPI.Controllers
         {
             return await _User.Get();
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             return await _User.Get(id);
         }
-
-        [HttpGet("login")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser(string email, string password)
+        [HttpGet("users")]
+        public async Task<IEnumerable<User>> GetUser(string email, string password)
         {
-            // Query the database for users with the exact email and password (case-sensitive)
-            var users = await _User.Get(email, password);
-
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(users);
+            return await _User.Get(email, password);
         }
+		[HttpGet("Email")]
+		public async Task<IEnumerable<User>> GetUser(string email)
+		{
+			return await _User.Get(email);
+		}
 
-        [HttpGet("checkEmail")]
-        public async Task<IEnumerable<User>> GetUser(string email)
-        {
-            return await _User.Get(email);
-        }
-     
-        //Same as Create
-        [HttpPost("signUp")]
+
+
+
+		[HttpPost]
         public async Task<ActionResult<User>> Post([FromBody] User User)
         {
-
-            // Generate a random value for userUN
-            Random random = new Random();
-            User.userUN = random.Next();
-
-            var newUser = await _User.Post(User);
-
-            return CreatedAtAction(nameof(GetUser), new { id = newUser.id}, newUser);
+            var newCurrency = await _User.Post(User);
+            return CreatedAtAction(nameof(GetUser), new { id = newCurrency.id }, newCurrency);
         }
-
-        [HttpPut("update")]
-        public async Task<ActionResult> Put([FromBody] User User)
+        [HttpPut]
+        public async Task<ActionResult> Put(int id, [FromBody] User User)
         {
+            if (id != User.id)
+            {
+                return BadRequest();
+            }
             await _User.Put(User);
             return NoContent();
         }
 
-        [HttpDelete("destroy/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delect(int id)
         {
             var Currencydelet = await _User.Get(id);
