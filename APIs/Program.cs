@@ -24,8 +24,10 @@ namespace webAPI
             builder.Services.AddControllers();
 			builder.Services.AddScoped<IAPIs<User>, UserRepository>();
 			builder.Services.AddScoped<IAPIs<Password_Reset>, Password_ResetRepository>();
+            builder.Services.AddScoped<ITickets<Ticket>, TicketRepository>();
 
-			builder.Services.AddDbContext<db>(options =>
+
+            builder.Services.AddDbContext<db>(options =>
             {
                 options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
 			});

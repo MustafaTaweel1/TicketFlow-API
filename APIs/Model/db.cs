@@ -8,7 +8,8 @@ namespace webAPI.Model
         public DbSet<User> users { get; set; }
 		public DbSet<Password_Reset> password_resets { get; set; }
 
-		public db(DbContextOptions<db> optinos) : base(optinos)
+        public DbSet<Ticket> tickets { get; set; }
+        public db(DbContextOptions<db> optinos) : base(optinos)
         {
             Database.EnsureCreated();
         }

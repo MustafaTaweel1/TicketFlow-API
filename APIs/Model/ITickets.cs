@@ -1,16 +1,15 @@
 ﻿namespace webAPI.Model
 {
-    public interface IAPIs<T>
+    public interface ITickets<T>
     {
         Task<IEnumerable<T>> Get();
         Task<T> Get(int id);
-        Task<IEnumerable<T>> Get(string email="",string password="");
-        Task<IEnumerable<T>> Get(string email);
+        Task<IEnumerable<T>> GetStatus(int status);
 
+        Task<IEnumerable<T>> Get(string creatorName = "", int status = 0);
 
         Task<T> Post(T person);
         Task Put(T person);
         Task Delete(int id);
-
     }
 }
