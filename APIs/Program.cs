@@ -27,11 +27,12 @@ namespace webAPI
             builder.Services.AddScoped<ITickets<Ticket>, TicketRepository>();
 
 
-            builder.Services.AddDbContext<db>(options =>
-            {
-                options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
-			});
+			//         builder.Services.AddDbContext<db>(options =>
+			//         {
+			//             options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
+			//});
 
+			builder.Services.AddDbContext<db>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBContext")));
 
 			var app = builder.Build();
 
