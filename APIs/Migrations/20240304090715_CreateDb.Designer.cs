@@ -12,8 +12,8 @@ using webAPI.Model;
 namespace APIs.Migrations
 {
     [DbContext(typeof(db))]
-    [Migration("20240226121020_addidusertotableTicket")]
-    partial class addidusertotableTicket
+    [Migration("20240304090715_CreateDb")]
+    partial class CreateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,24 @@ namespace APIs.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("webAPI.Model.Password_Reset", b =>
+            modelBuilder.Entity("APIs.Model.models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Department");
+                });
+
+            modelBuilder.Entity("APIs.Model.models.Password_Reset", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +66,7 @@ namespace APIs.Migrations
                     b.ToTable("password_resets");
                 });
 
-            modelBuilder.Entity("webAPI.Model.Ticket", b =>
+            modelBuilder.Entity("APIs.Model.models.Ticket", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -57,19 +74,16 @@ namespace APIs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("creatorName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("department")
+                        .HasColumnType("int");
 
-                    b.Property<string>("department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("id_user")
+                    b.Property<int>("id_create")
                         .HasColumnType("int");
 
                     b.Property<int>("status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("take_user")
                         .HasColumnType("int");
 
                     b.Property<string>("title")
@@ -78,16 +92,23 @@ namespace APIs.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("id_create");
+
+                    b.HasIndex("take_user");
+
                     b.ToTable("tickets");
                 });
 
-            modelBuilder.Entity("webAPI.Model.User", b =>
+            modelBuilder.Entity("APIs.Model.models.User", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -103,9 +124,48 @@ namespace APIs.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("APIs.Model.models.Ticket", b =>
+                {
+                    b.HasOne("APIs.Model.models.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("id_create")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APIs.Model.models.User", "Handler")
+                        .WithMany()
+                        .HasForeignKey("take_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Handler");
+                });
+
+            modelBuilder.Entity("APIs.Model.models.User", b =>
+                {
+                    b.HasOne("APIs.Model.models.Department", null)
+                        .WithMany("User")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("APIs.Model.models.Department", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

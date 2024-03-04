@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using APIs.Model.IRepository;
+using APIs.Model.models;
+using Microsoft.EntityFrameworkCore;
+using webAPI.Model;
 
-namespace webAPI.Model
+namespace APIs.Model.Repository
 {
     public class Password_ResetRepository : IAPIs<Password_Reset>
     {
@@ -32,7 +35,7 @@ namespace webAPI.Model
         public async Task<IEnumerable<Password_Reset>> Get(string getEmail)
         {
             getEmail = getEmail.ToLower();
-            var output = await _db.password_resets.Where(or => or.email == (getEmail)).ToListAsync();
+            var output = await _db.password_resets.Where(or => or.email == getEmail).ToListAsync();
             return output;
         }
 
@@ -51,9 +54,12 @@ namespace webAPI.Model
             return password_s.Where(user => user.token.Equals(token));
         }
 
+		public Task<IEnumerable<Password_Reset>> GetAllDepartment(int depId)
+		{
+			throw new NotImplementedException();
+		}
 
-
-        public async Task<Password_Reset> Post(Password_Reset password_reset)
+		public async Task<Password_Reset> Post(Password_Reset password_reset)
         {
             password_reset.email = password_reset.email.ToLower();
             _db.password_resets.AddAsync(password_reset);

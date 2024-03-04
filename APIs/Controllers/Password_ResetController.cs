@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using APIs.Model.IRepository;
+using APIs.Model.models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using webAPI.Model;
 
 namespace webAPI.Controllers
 {

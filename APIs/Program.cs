@@ -1,4 +1,7 @@
 
+using APIs.Model.IRepository;
+using APIs.Model.models;
+using APIs.Model.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,25 +28,26 @@ namespace webAPI
 			builder.Services.AddScoped<IAPIs<User>, UserRepository>();
 			builder.Services.AddScoped<IAPIs<Password_Reset>, Password_ResetRepository>();
             builder.Services.AddScoped<ITickets<Ticket>, TicketRepository>();
+			builder.Services.AddScoped<IDepartment<Department>, DepartmentRepository>();
 
 
-			//         builder.Services.AddDbContext<db>(options =>
-			//         {
-			//             options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
-			//});
+			builder.Services.AddDbContext<db>(options =>
+            {
+                options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Create_API; Integrated Security = True;");
+            });
 
-			builder.Services.AddDbContext<db>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBContext")));
 
-			var app = builder.Build();
+           // builder.Services.AddDbContext<db>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBContext")));
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
+			if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) 
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
+			app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
