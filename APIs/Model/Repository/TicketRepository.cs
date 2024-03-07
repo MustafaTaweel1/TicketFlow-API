@@ -24,14 +24,14 @@ namespace APIs.Model.Repository
         {
 
 
-            return await _db.tickets.Include(t => t.Creator).ToListAsync();
+            return await _db.tickets.Include(t => t.Creator).Include(t => t.Handler).ToListAsync();
         }
 
 
         // get by ID
         public async Task<Ticket> Get(int id)
         {
-            return await _db.tickets.Include(t => t.Creator).FirstOrDefaultAsync(t => t.id == id);
+            return await _db.tickets.Include(t => t.Creator).Include(t => t.Handler).FirstOrDefaultAsync(t => t.id == id);
 
         }
 
@@ -48,6 +48,7 @@ namespace APIs.Model.Repository
 
         public async Task<Ticket> Post(Ticket ticket)
         {
+            ticket.Handler = _db.users.FirstOrDefault(u => u.id == 3);
 
             _db.tickets.AddAsync(ticket);
             await _db.SaveChangesAsync();
@@ -77,7 +78,7 @@ namespace APIs.Model.Repository
 
 		public async Task<IEnumerable<Ticket>> GetDepartment(int dep_id)
 		{
-			return await _db.tickets.Where(or => or.department == dep_id).ToListAsync();
+			return await _db.tickets.Include(t => t.Creator).Include(t => t.Handler).Where(or => or.department == dep_id).ToListAsync();
 
 		}
 	}
